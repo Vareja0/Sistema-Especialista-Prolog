@@ -111,12 +111,15 @@ calcula_todas_pontuacoes([Trilha | RestoTrilhas], [[Pontuacao, Trilha] | RestoRa
 
 % Inicia o programa
 iniciar :-
+    % Limpa respostas das execuçoes anteriores
     retractall(resposta(_, _)),
     write('Sistema Especialista para Recomendação de Trilha Acadêmica:'), nl,
     write('Responda as seguintes perguntas com s (sim) ou n (nao)'), nl, nl,
     
+    % Inicia o questionario
     faz_perguntas,
     
+    % Gera e mostra o resultado
     recomenda(Ranking),
     exibe_resultado(Ranking),
     nl, write('--- Fim da recomendação. ---'), nl.
@@ -127,20 +130,21 @@ faz_perguntas :-
     percorre_perguntas(Perguntas).
 
 percorre_perguntas([]). % Caso base lista de perguntas vazia
-percorre_perguntas([[ID, Texto] | Resto]) :-
+percorre_perguntas([[ID, Texto] | Resto]) :- % Tira primeira pergunta da lista 
     pergunta_usuario(ID, Texto),
     percorre_perguntas(Resto).
 
 pergunta_usuario(ID, Texto) :-
     write(Texto), write(' (s/n): '),
-    read(Resposta),
+    read(Resposta), % Le input e guarda em Resposta
     ( (Resposta == s ; Resposta == n) ->
         assertz(resposta(ID, Resposta))
     ;
         write('Resposta invalida. Por favor, responda com s ou n.'), nl,
-        pergunta_usuario(ID, Texto)
+        pergunta_usuario(ID, Texto) % Pede novamente em caso de erro.
     ).
 
+% Mostra rank de afinidade
 exibe_resultado([[Pontuacao, Trilha] | Resto]) :-
     trilha(Trilha, Descricao),
     format('~n--- Trilha Recomendada: ~w (Pontuação: ~w) ---~n', [Trilha, Pontuacao]),
@@ -148,11 +152,13 @@ exibe_resultado([[Pontuacao, Trilha] | Resto]) :-
     justifica_recomendacao(Trilha),
     exibe_resultado(Resto).
 
+% Justifica a recomendação mostrando quais respostas contribuiram.
 justifica_recomendacao(Trilha) :-
     write('Esta trilha foi recomendada porque você respondeu ''sim'' a perguntas relacionadas a:'), nl,
     perfil(Trilha, Caracteristica, Peso),
     resposta_positiva(Caracteristica),
     pergunta(_, TextoPergunta, Caracteristica),
-    format('- ~w (relevância: ~w/5)~n', [TextoPergunta, Peso]).
+    format('- ~w (relevância: ~w/5)~n', [TextoPergunta, Peso]),
+    fail. % Força o backtracking para encontrar todas as justificativas.
     
-justifica_recomendacao(_).
+justifica_recomendacao(_). % Impede que o predicado falhe no final.
