@@ -1,9 +1,3 @@
-
-:- discontiguous trilha/2.
-:- discontiguous perfil/3.
-:- discontiguous pergunta/3.
-    
-    
 % 1. Fatos: Definição das trilhas de especialização
 trilha(ciencia_de_dados, 'Análise e interpretação de grandes volumes de dados para extrair conhecimento.').
 trilha(inteligencia_artificial, 'Desenvolvimento de sistemas que simulam a capacidade humana de raciocinar e aprender.').
@@ -19,42 +13,50 @@ perfil(ciencia_de_dados, matematica_estatistica, 5).
 perfil(ciencia_de_dados, raciocinio_logico, 5).
 perfil(ciencia_de_dados, visualizacao_dados, 4).
 perfil(ciencia_de_dados, curiosidade_negocio, 3).
+perfil(ciencia_de_dados, aprendizado_continuo, 3).
 
 % --- Inteligência Artificial
-perfil(inteligencia_artificial, matematica_estatistica, 5).
+perfil(inteligencia_artificial, matematica_estatistica, 4).
 perfil(inteligencia_artificial, raciocinio_logico, 5).
 perfil(inteligencia_artificial, problemas_teoricos, 4).
 perfil(inteligencia_artificial, pensamento_abstrato, 4).
+perfil(inteligencia_artificial, etica, 3).
 
 % --- Desenvolvimento Web
 perfil(desenvolvimento_web, raciocinio_logico, 5).
-perfil(desenvolvimento_web, design, 3).
-perfil(desenvolvimento_web, resolucao_problemas_praticos, 4).
+perfil(desenvolvimento_web, design, 4).
+perfil(desenvolvimento_web, problemas_praticos, 4).
 perfil(desenvolvimento_web, aprendizado_continuo, 4).
+perfil(desenvolvimento_web, trabalho_coletivo, 3).
+
 
 % --- Seguranca_da_informacao
 perfil(seguranca_da_informacao, desenvolvimento, 5).
 perfil(seguranca_da_informacao, raciocinio_logico, 5).
 perfil(seguranca_da_informacao, trabalho_coletivo, 4).
 perfil(seguranca_da_informacao, corporativismo, 3).
+perfil(seguranca_da_informacao, etica, 3).
 
 % --- Redes e infraestrutura
 perfil(redes_e_infraestrutura, problemas_praticos, 5).
 perfil(redes_e_infraestrutura, corporativismo, 5).
-perfil(redes_e_infraestrutura, design, 4).
+perfil(redes_e_infraestrutura, habilidade_manual, 4).
 perfil(redes_e_infraestrutura, desenvolvimento, 2).
+perfil(redes_e_infraestrutura, trabalho_coletivo, 4).
 
 % --- Devops
 perfil(devops, problemas_teoricos, 5).
 perfil(devops, trabalho_coletivo, 4).
 perfil(devops, raciocinio_logico, 3).
-perfil(devops, desenvolvimento, 2).
+perfil(devops, desenvolvimento, 3).
+perfil(devops, aprendizado_continuo, 5).
 
 % --- Robotica
 perfil(robotica, problemas_praticos, 5).
-perfil(robotica, desenvolvimento, 3).
-perfil(robotica, raciocinio_logico, 4).
+perfil(robotica, desenvolvimento, 4).
+perfil(robotica, raciocinio_logico, 5).
 perfil(robotica, design, 2).
+perfil(robotica, habilidade_manual, 4).
 
 % 3. Fatos: Perguntas para identificar as características no usuário
 pergunta(1, 'Você tem afinidade com matemática e estatística?', matematica_estatistica).
@@ -65,8 +67,12 @@ pergunta(5, 'Voce tem facilidade em se comunicar em equipe?', trabalho_coletivo)
 pergunta(6, 'Voce tem interesse em trabalhar para uma empresa hierarquisada?', corporativismo).
 pergunta(7, 'Voce tem interesse na area de desing?', design).
 pergunta(8, 'Voce tem interesse em trabalhar no ramo de negocios?', curiosidade_negocio).
-pergunta(9, 'Pergunta visualizacao dados?', visualizacao_dados).
-pergunta(10, 'Pergunta pensamento abstrato?', pensamento_abstrato).
+pergunta(9, 'Voce gosta de lidar com dados?', visualizacao_dados).
+pergunta(10, 'Voce e criativo?', pensamento_abstrato).
+pergunta(11, 'Voce tem facilidade com trabalhos manuais?', habilidade_manual).
+pergunta(12, 'Voce gosta de aprender novas tecnologias?', aprendizado_continuo).
+pergunta(13, 'Voce tem interesse em etica?', etica).
+pergunta(14, 'Voce gosta de programacao', desenvolvimento).
 
 
 
@@ -145,6 +151,7 @@ pergunta_usuario(ID, Texto) :-
     ).
 
 % Mostra rank de afinidade
+exibe_resultado([]).
 exibe_resultado([[Pontuacao, Trilha] | Resto]) :-
     trilha(Trilha, Descricao),
     format('~n--- Trilha Recomendada: ~w (Pontuação: ~w) ---~n', [Trilha, Pontuacao]),
