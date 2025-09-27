@@ -60,56 +60,56 @@ perfil(robotica, habilidade_manual, 4).
 
 % 3. Fatos: Perguntas para identificar as características no usuário
 pergunta(1, 'Você tem afinidade com matemática e estatística?', matematica_estatistica).
-pergunta(2, 'Voce prefere problemas praticos a problemas teoricos?', problemas_praticos).
-pergunta(3, 'Voce prefere problemas teoricos a problemas praticos?', problemas_teoricos).
-pergunta(4, 'Voce tem facilidade na resolucao de problemas logicos?', raciocinio_logico).
-pergunta(5, 'Voce tem facilidade em se comunicar em equipe?', trabalho_coletivo).
-pergunta(6, 'Voce tem interesse em trabalhar para uma empresa hierarquisada?', corporativismo).
-pergunta(7, 'Voce tem interesse na area de desing?', design).
-pergunta(8, 'Voce tem interesse em trabalhar no ramo de negocios?', curiosidade_negocio).
-pergunta(9, 'Voce gosta de lidar com dados?', visualizacao_dados).
-pergunta(10, 'Voce e criativo?', pensamento_abstrato).
-pergunta(11, 'Voce tem facilidade com trabalhos manuais?', habilidade_manual).
-pergunta(12, 'Voce gosta de aprender novas tecnologias?', aprendizado_continuo).
-pergunta(13, 'Voce tem interesse em etica?', etica).
-pergunta(14, 'Voce gosta de programacao', desenvolvimento).
+pergunta(2, 'Você se sente realizado ao aplicar tecnologia para resolver problemas concretos e com resultados visíveis a curto prazo?', problemas_praticos).
+pergunta(3, 'Você gosta de pesquisar e se aprofundar em conceitos teóricos, mesmo que eles não tenham uma aplicação prática imediata?', problemas_teoricos).
+pergunta(4, 'Você gosta de resolver quebra-cabeças ou desafios que exigem raciocínio lógico?', raciocinio_logico).
+pergunta(5, 'Você se considera uma pessoa colaborativa e que gosta de trabalhar em equipe?', trabalho_coletivo).
+pergunta(6, 'Você prefere trabalhar em ambientes corporativos com hierarquia e processos bem definidos?', corporativismo).
+pergunta(7, 'Você se interessa pela parte visual, como design, estética e experiência do usuário em produtos digitais?', design).
+pergunta(8, 'Você tem curiosidade sobre como as empresas funcionam, geram lucro e definem estratégias?', curiosidade_negocio).
+pergunta(9, 'Você se sente à vontade analisando planilhas, gráficos e grandes volumes de dados para encontrar padrões?', visualizacao_dados).
+pergunta(10, 'Você prefere focar nos conceitos e modelos por trás de um problema a ir direto para a solução prática e imediata?', pensamento_abstrato).
+pergunta(11, 'Você tem interesse em montar ou desmontar equipamentos, trabalhando com hardware e componentes físicos?', habilidade_manual).
+pergunta(12, 'Você se sente motivado a estudar e aprender constantemente sobre novas ferramentas e tecnologias?', aprendizado_continuo).
+pergunta(13, 'Você se preocupa com as implicações éticas e o impacto social da tecnologia?', etica).
+pergunta(14, 'Você gosta de escrever código e desenvolver algoritmos para criar soluções de software?', desenvolvimento).
 
 
 
 calcula_pontuacao_trilha(Trilha, PontuacaoFinal) :-
-    % -> procura todos os pares [Caracteristica, Peso] para a trilha passada
+    % -> Procura todos os pares [Caracteristica, Peso] para a trilha passada.
     findall([Caracteristica, Peso], perfil(Trilha, Caracteristica, Peso), Perfis),
-    % -> chama o predicado que conta os pontos
+    % -> Chama o predicado que soma os pontos.
     soma_pontos(Perfis, 0, PontuacaoFinal).
 
 % Caso Base
-soma_pontos([], PontuacaoAcumulada, PontuacaoAcumulada). % -> caso a lista de perfis esteja vazio, a pontuacao 'e o acumulado
+soma_pontos([], PontuacaoAcumulada, PontuacaoAcumulada). % -> Caso a lista de perfis esteja vazia, a pontuação é o valor acumulado.
 
-soma_pontos([[Caracteristica, Peso] | RestoPerfis], PontuacaoAtual, PontuacaoFinal) :- % -> pega o primeiro perfil da lista
-    % verifica se a resposta foi positiva, se sim, soma o peso. Senao, nao soma nada
+soma_pontos([[Caracteristica, Peso] | RestoPerfis], PontuacaoAtual, PontuacaoFinal) :- % -> Pega o primeiro perfil da lista.
+    % Verifica se a resposta foi positiva. Se sim, soma o peso, senão, não soma nada.
     (resposta_positiva(Caracteristica) -> NovaPontuacao is PontuacaoAtual + Peso ; NovaPontuacao is PontuacaoAtual),
-    % chama o predicado recursivamente para fazer o processamento do resto da lista
+    % Chama o predicado recursivamente para processar o resto da lista.
     soma_pontos(RestoPerfis, NovaPontuacao, PontuacaoFinal).
 
 
 resposta_positiva(Caracteristica) :-
-    pergunta(_, _, Caracteristica), % -> procure se existe uma pergunta que possua a caracteristica
-    pergunta(ID, _, Caracteristica), % -> "pega" o id da pergunta
-    resposta(ID, s). % -> verifica se a resposta para a pergunta foi positiva
+    pergunta(_, _, Caracteristica), % -> Procura se existe uma pergunta que possua a característica.
+    pergunta(ID, _, Caracteristica), % -> "Pega" o ID da pergunta.
+    resposta(ID, s). % -> Verifica se a resposta para essa pergunta foi positiva.
 
 
 recomenda(RankingOrdenado) :-
-    % findal -> procurara por todas as solucoes da consulta, no caso, todas as trilhas
-    findall(Trilha, trilha(Trilha, _), TodasTrilhas), % -> pegue o valor na variavel, ou seja, o segundo elemento de trilha(Trilha, _), e coloque na lista TodasTrilhas
-    % A lista deve ficar parecida com: [ciencia_de_dados, desenvolvimento_web, etc]
-    calcula_todas_pontuacoes(TodasTrilhas, Ranking), % -> chama o predicado para calcular a pontuacao
-    sort(0, @>=, Ranking, RankingOrdenado). % -> ordena de forma decrescente
+    % findall -> Procurará por todas as soluções da consulta, no caso, todas as trilhas.
+    findall(Trilha, trilha(Trilha, _), TodasTrilhas), % -> Pega o valor na variável Trilha e o coloca na lista TodasTrilhas.
+    % A lista deve ficar parecida com: [ciencia_de_dados, desenvolvimento_web, etc].
+    calcula_todas_pontuacoes(TodasTrilhas, Ranking), % -> Chama o predicado para calcular as pontuações.
+    sort(0, @>=, Ranking, RankingOrdenado). % -> Ordena de forma decrescente.
 
-calcula_todas_pontuacoes([], []). % -> caso a lista de trilhas for vazia, o ranking tambem sera vazio
+calcula_todas_pontuacoes([], []). % -> Caso a lista de trilhas seja vazia, o ranking também será vazio.
 calcula_todas_pontuacoes([Trilha | RestoTrilhas], [[Pontuacao, Trilha] | RestoRanking]) :-
- 	% o predicado pega o primeiro elemento ("Trilha"), e calcula a pontuacao da trilha
+    % O predicado pega o primeiro elemento ("Trilha") e calcula a pontuação da trilha.
     calcula_pontuacao_trilha(Trilha, Pontuacao),
-    % chama o predicado recursivamente para fazer o processamento do resto da lista
+    % Chama o predicado recursivamente para fazer o processamento do resto da lista.
     calcula_todas_pontuacoes(RestoTrilhas, RestoRanking).
 
 % Predicado para salvar as respostas do usuario dinamicamente
