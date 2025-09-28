@@ -169,3 +169,15 @@ justifica_recomendacao(Trilha) :-
     fail. % Força o backtracking para encontrar todas as justificativas.
     
 justifica_recomendacao(_). % Impede que o predicado falhe no final.
+
+
+% Predicado para carregar o modo teste
+testar(ArquivoPerfil) :-
+    % Garante que a base de conhecimento e o sistema principal estão carregados.
+    %consult('base_conhecimento.pl'),
+    retractall(resposta(_, _)), % Limpa respostas antigas.
+    consult(ArquivoPerfil), % Carrega as respostas do arquivo.
+    format('~n--- Executando teste com o perfil: ~w ---~n', [ArquivoPerfil]),
+    recomenda(Ranking),
+    exibe_resultado(Ranking),
+    nl, write('--- Fim do teste. ---'), nl.
