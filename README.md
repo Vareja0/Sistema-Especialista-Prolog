@@ -39,7 +39,7 @@ Para executar este projeto, você precisa ter o **SWI-Prolog** instalado em seu 
 4.  **Carregue os arquivos do sistema:**
     Dentro do terminal do Prolog, consulte (carregue) os arquivos principais. O `sistema.pl` já deve consultar a base de conhecimento.
     ```prolog
-    ?- [sistema]. 
+    ?- ['sistema.pl']. 
     ```    
     
 ### Modos de Execução
